@@ -5,6 +5,7 @@ nodejs/johnny-five; Visual automobile parking system, w/garage door opener &amp;
 
     Questions
 ---------------------
+
         on the button control I'm pressing less than the default 500ms 
         (or the 750ms I specified in a constructor ovrload)
         yet I'm still getting the 
