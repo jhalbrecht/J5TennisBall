@@ -32,7 +32,6 @@ Hardware
     stages of the project.
 
 */
-
 var j5 = require("johnny-five"),
     board, button;
 
@@ -42,7 +41,7 @@ board.on("ready", function () {
 
     var ping = new j5.Ping({
         pin: 8,
-        freq: 1000
+        freq: 250
     });
 
     button = new j5.Button(
@@ -70,13 +69,13 @@ board.on("ready", function () {
     });
 
     function enableTrafficLights() {
-        redLight.strobe(333);
-        yellowLight.strobe(444);
-        greenLight.strobe(555);
+        //redLight.strobe(333);
+        //yellowLight.strobe(444);
+        //greenLight.strobe(555);
 
-        //redLight.on();
-        //yellowLight.on();
-        //greenLight.on();
+        redLight.on();
+        yellowLight.on();
+        greenLight.on();
 
     } function disableTrafficLights() {
         redLight.off();
@@ -99,7 +98,58 @@ board.on("ready", function () {
         console.log("data", value);
     });
 
+    var lowerLimit = 4;
+
     ping.on("change", function (err, value) {
+
+        // flashing red
+        if (this.inches < lowerLimit) {
+            redLight.strobe(200);
+            yellowLight.off();
+            greenLight.off();
+        }
+        // solid red
+        if (this.inches > lowerLimit && this.inches < 6) {
+            redLight.off().stop();
+            redLight.on();
+            yellowLight.off();
+            greenLight.off();
+        }
+        // red and yellow
+        if (this.inches > 6 && this.inches < 10) {
+            console.log("red and yellow zone");
+            redLight.off().stop();
+            redLight.on();
+            yellowLight.on();
+            greenLight.off();
+        }
+        // yellow
+        if (this.inches > 10 && this.inches < 20) {
+            console.log("yellow zone");
+            redLight.off();
+            yellowLight.on();
+            greenLight.off();
+        }
+        // green and yellow
+        if (this.inches > 20 && this.inches < 35) {
+            console.log("green and yellow zone");
+            greenLight.on();
+            yellowLight.on();
+            redLight.off();
+        }
+        // green
+        if (this.inches > 35 ) {
+            redLight.off();
+            yellowLight.off();
+            greenLight.on();
+        }
+
+        // green
+
+        // off
+        //    redLight.off();
+        //    yellowLight.off();
+        //    greenLight.off(); 
 
         console.log(typeof this.inches);
         console.log("Object is " + this.inches + "inches away");
