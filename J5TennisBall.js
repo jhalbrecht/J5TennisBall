@@ -32,6 +32,7 @@ Hardware
     stages of the project.
 
 */
+
 var j5 = require("johnny-five"),
     board, button;
 
@@ -57,15 +58,21 @@ board.on("ready", function () {
 
     //});
 
+    var ginches = 20;
+
     button.on("hold", function () {
-        if (isButton) {
-            enableTrafficLights();
-            console.log("initTrafficLights");
-        } else {
-            disableTrafficLights();
-            console.log("disableTrafficLights");
-        }
-        isButton = !isButton;
+
+        offset = ginches;
+        console.log("offset = " + offset);
+
+        //if (isButton) {
+        //    enableTrafficLights();
+        //    console.log("initTrafficLights");
+        //} else {
+        //    disableTrafficLights();
+        //    console.log("disableTrafficLights");
+        //}
+        //isButton = !isButton;
     });
 
     function enableTrafficLights() {
@@ -94,51 +101,60 @@ board.on("ready", function () {
         //greenLight.strobe(555);
     }
 
-    ping.on("data", function (err, value) {
-        console.log("data", value);
-    });
+    //ping.on("data", function (err, value) {
+    //    console.log("data", value);
+    //});
 
+    /*
+                                        main gaps loop
+    */
     var lowerLimit = 4;
+    var offset = 10;
 
     ping.on("change", function (err, value) {
+        ginches = this.inches;
 
         // flashing red
-        if (this.inches < lowerLimit) {
+        if (this.inches < (lowerLimit + offset)) {
+            console.log("flashing red");
             redLight.strobe(200);
             yellowLight.off();
             greenLight.off();
+            //goto end
         }
-        // solid red
-        if (this.inches > lowerLimit && this.inches < 6) {
+            // solid red
+        else if (this.inches > lowerLimit && this.inches < 6 + offset) {
+            console.log("red");
             redLight.off().stop();
             redLight.on();
             yellowLight.off();
             greenLight.off();
         }
-        // red and yellow
-        if (this.inches > 6 && this.inches < 10) {
-            console.log("red and yellow zone");
+            // red and yellow
+        else if (this.inches > 6 + offset && this.inches < 10 + offset) {
+            console.log("red and yellow");
             redLight.off().stop();
             redLight.on();
             yellowLight.on();
             greenLight.off();
         }
-        // yellow
-        if (this.inches > 10 && this.inches < 20) {
-            console.log("yellow zone");
+            // yellow
+        else if (this.inches > 10 + offset && this.inches < 20 + offset) {
+            console.log("yellow");
             redLight.off();
             yellowLight.on();
             greenLight.off();
         }
-        // green and yellow
-        if (this.inches > 20 && this.inches < 35) {
-            console.log("green and yellow zone");
+            // green and yellow
+        else if (this.inches > 20 + offset && this.inches < 35 + offset) {
+            console.log("green and yellow");
             greenLight.on();
             yellowLight.on();
             redLight.off();
         }
         // green
-        if (this.inches > 35 ) {
+        if (this.inches > 35 + offset) {
+            // else (this.inches > 35 + offset) {
             redLight.off();
             yellowLight.off();
             greenLight.on();
@@ -150,6 +166,9 @@ board.on("ready", function () {
         //    redLight.off();
         //    yellowLight.off();
         //    greenLight.off(); 
+
+        //        [lbl]
+        //end:
 
         console.log(typeof this.inches);
         console.log("Object is " + this.inches + "inches away");
