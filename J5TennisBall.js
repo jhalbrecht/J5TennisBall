@@ -27,15 +27,6 @@ Hardware
 
 
     Questions
-        on the button control I'm pressing less than the default 500ms 
-        (or the 750ms I specified in a constructor ovrload)
-        yet I'm still getting the 
-                button.on("hold" ... event
-    });
-
-    The button is wired as the johnny-five documentation indicates. 
-    I'm using a button on a sparkfun proto shield for testing. 
-    later this will be replaced by the garage door opener and used for toast notification.
 
     I hope my robots.txt will block search indexing while in the early not ready for prime time
     stages of the project.
@@ -56,27 +47,41 @@ board.on("ready", function () {
 
     button = new j5.Button(
         {
-            // TODO should I submit an issue to document the overides in the johnny-five doc and/or wiki ? 
             pin: 7,
-            holdtime: 750
+            holdtime: 500,
+            invert: true
         });
 
-    button.on("down", function () {
-        console.log("button down");
-        // tl;
-        // tl();
-        disableTrafficLights();
-    });
+    var isButton = true;
+
+    //button.on("down", function () {
+
+    //});
 
     button.on("hold", function () {
-        console.log("button hold");
-        initTrafficLights();
+        if (isButton) {
+            enableTrafficLights();
+            console.log("initTrafficLights");
+        } else {
+            disableTrafficLights();
+            console.log("disableTrafficLights");
+        }
+        isButton = !isButton;
     });
 
-    function disableTrafficLights() {
-        redLight.stop();
-        yellowLight.stop();
-        greenLight.stop();
+    function enableTrafficLights() {
+        redLight.strobe(333);
+        yellowLight.strobe(444);
+        greenLight.strobe(555);
+
+        //redLight.on();
+        //yellowLight.on();
+        //greenLight.on();
+
+    } function disableTrafficLights() {
+        redLight.off();
+        yellowLight.off();
+        greenLight.off();
     }
 
     function initTrafficLights() {
@@ -85,9 +90,9 @@ board.on("ready", function () {
         yellowLight = new j5.Led(2);
         greenLight = new j5.Led(4);
 
-        redLight.strobe(333);
-        yellowLight.strobe(444);
-        greenLight.strobe(555);
+        //redLight.strobe(333);
+        //yellowLight.strobe(444);
+        //greenLight.strobe(555);
     }
 
     ping.on("data", function (err, value) {
