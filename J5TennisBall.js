@@ -12,8 +12,9 @@ Objectives
       garage door toast notification on garage door opening. 
 
 Hardware
-    1 Beagle Board Black or Raspberry Pi
+    1 Raspberry Pi 
     2 Parallax dual relay boards http://www.parallax.com/product/27114 (if using huge LEDs)
+        Beware current draw on micro processors even when using small LEDs.
     1 ping sensor
         Parallax ping http://www.parallax.com/product/28015
         or
@@ -25,11 +26,6 @@ Hardware
     1 ~9VDC power supply for arduino (powering sensors)
         I overloaded the USB supply after adding the ping after the relays.
 
-
-    Questions
-
-    I hope my robots.txt will block search indexing while in the early not ready for prime time
-    stages of the project.
 
 */
 
@@ -52,34 +48,14 @@ board.on("ready", function () {
             invert: true
         });
 
-    var isButton = true;
-
-    //button.on("down", function () {
-
-    //});
-
     var ginches = 20;
-
     button.on("hold", function () {
 
         offset = ginches;
         console.log("offset = " + offset);
-
-        //if (isButton) {
-        //    enableTrafficLights();
-        //    console.log("initTrafficLights");
-        //} else {
-        //    disableTrafficLights();
-        //    console.log("disableTrafficLights");
-        //}
-        //isButton = !isButton;
     });
 
     function enableTrafficLights() {
-        //redLight.strobe(333);
-        //yellowLight.strobe(444);
-        //greenLight.strobe(555);
-
         redLight.on();
         yellowLight.on();
         greenLight.on();
@@ -95,10 +71,6 @@ board.on("ready", function () {
         redLight = new j5.Led(3);
         yellowLight = new j5.Led(2);
         greenLight = new j5.Led(4);
-
-        //redLight.strobe(333);
-        //yellowLight.strobe(444);
-        //greenLight.strobe(555);
     }
 
     //ping.on("data", function (err, value) {
@@ -108,8 +80,8 @@ board.on("ready", function () {
     /*
                                         main gaps loop
     */
-    var lowerLimit = 4;
-    var offset = 10;
+    var lowerLimit = 2;
+    var offset = 5;
 
     ping.on("change", function (err, value) {
         ginches = this.inches;
@@ -123,7 +95,7 @@ board.on("ready", function () {
             //goto end
         }
             // solid red
-        else if (this.inches > lowerLimit && this.inches < 6 + offset) {
+        else if (this.inches > lowerLimit + offset && this.inches < 6 + offset) {
             console.log("red");
             redLight.off().stop();
             redLight.on();
@@ -152,9 +124,10 @@ board.on("ready", function () {
             yellowLight.on();
             redLight.off();
         }
-        // green
-        if (this.inches > 35 + offset) {
-            // else (this.inches > 35 + offset) {
+            // green
+            // if (this.inches > 35 + offset) {
+        else if (this.inches > 55 + offset) {
+            console.log("green");
             redLight.off();
             yellowLight.off();
             greenLight.on();
@@ -167,11 +140,10 @@ board.on("ready", function () {
         //    yellowLight.off();
         //    greenLight.off(); 
 
-        //        [lbl]
         //end:
 
-        console.log(typeof this.inches);
-        console.log("Object is " + this.inches + "inches away");
+        //console.log(typeof this.inches);
+        //console.log("Object is " + this.inches + "inches away");
     });
 
     initTrafficLights();
