@@ -1,6 +1,9 @@
 J5TennisBall
 ============
 
+
+[![Garage Automobile Parking System](https://img.youtube.com/vi/f-NTwmQLwjE/0.jpg)](https://youtu.be/f-NTwmQLwjE)
+
 nodejs/johnny-five; Visual automobile parking system, w/garage door opener &amp; temperature logger
 
 ---------------------
