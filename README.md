@@ -16,5 +16,6 @@ Visual automobile parking system, w/garage door opener &amp; temperature logger
 
 ---------------------
 
-
-![assets/Hardware.jpg](https://pbs.twimg.com/media/BXnuDJTCYAApjIR.jpg)
+<p align="left">
+  <img height="600" src="https://pbs.twimg.com/media/BXnuDJTCYAApjIR.jpg">
+</p>
