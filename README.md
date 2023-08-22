@@ -4,7 +4,7 @@ G.A.P.S. Garage Automobile Parking System
 
 J5TennisBall
 
-The name is inspired by my knowledge of JavaScript!
+The name is inspired by my (lack of or gaps in) knowledge of JavaScript! 
 
 _Click to see it on uTube_
 
